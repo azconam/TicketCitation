@@ -23,28 +23,29 @@ import java.util.Locale;
 public class Ticket {
 
     /**
-     * @return the number
+     * 
+     * @return the number (ticket number)
      */
     public int getNumber() {
         return number;
     }
 
     /**
-     * @param number the number to set
+     * @param number the (ticket) number to set
      */
     public void setNumber(int number) {
         this.number = number;
     }
 
     /**
-     * @return the license
+     * @return the license (plate)
      */
     public String getLicense() {
         return license;
     }
 
     /**
-     * @param license the license to set
+     * @param license the license (plate) to set
      */
     public void setLicense(String license) {
         this.license = license;
@@ -128,6 +129,7 @@ public class Ticket {
     }
 
     /**
+     * Converts user input into Date format and sets it as Date
      * 
      * @param month the month to set
      * @param day the day to set

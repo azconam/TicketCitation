@@ -38,9 +38,6 @@ import javafx.stage.Stage;
  * @author Mauricio Azcona
  * @version Build 1.4 March 2, 2018
  */
-
-// TicketView is the GUI class for TicketGUI
-
 public class TicketView extends BorderPane {
 
 
@@ -133,6 +130,12 @@ public class TicketView extends BorderPane {
 
     /**
      * TicketView Constructor
+     * 
+     * Sets up the GUI that is divided in five parts:
+     * a form with TextFields in the center, a title banner on top,
+     * a text area with payment information on the right, a navigation panel
+     * on the left for cycling through tickets, and a display area on the bottom
+     * for viewing tickets.
      */
     public void TicketView() {
         
@@ -267,7 +270,9 @@ public class TicketView extends BorderPane {
     }
     
     /**
-     * Clears TextFields
+     * Clears the form text fields
+     * after clicking the submit button in preparation
+     * for a new submission
      */
     public void clearFields(){
         ticketNumber.clear();
@@ -301,6 +306,8 @@ public class TicketView extends BorderPane {
     */
 
    /**
+    * Used for determining how many tickets have already
+    * been submitted
      * @return the lastTicketNum
      */
     public int getLastTicketNum() {
