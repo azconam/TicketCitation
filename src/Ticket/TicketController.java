@@ -6,8 +6,11 @@
 package Ticket;
 
 /**
- *
- * @author Mauricio
+ * Connects the model and the view by handling events from the view
+ * and sending them to the model.
+ * 
+ * @author Mauricio Azcona
+ * @version Build 1.4 March 2, 2018
  */
 
 // bridges the GUI and the storaging class
@@ -17,8 +20,8 @@ public class TicketController {
 
     /**
      * 
-     * @param model
-     * @param view 
+     * @param model the model
+     * @param view  the view
      */
     public TicketController(TicketModel model, TicketView view) {
         this.ticketModel = model;

@@ -12,8 +12,12 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- *
+ * Consists of basic information 
+ * on the person getting a ticket, their vehicle,
+ * and the reason for the ticket.
+ * 
  * @author Mauricio
+ * @version 1.4 Build March 3, 2018
  */
 
 public class Ticket {
@@ -125,9 +129,9 @@ public class Ticket {
 
     /**
      * 
-     * @param month
-     * @param day
-     * @param year
+     * @param month the month to set
+     * @param day the day to set
+     * @param year the year to set
      * @throws ParseException 
      */
     public void setDate(String month, int day, int year) throws ParseException {
@@ -159,9 +163,9 @@ public class Ticket {
 
     /**
      * 
-     * @param hour
-     * @param min
-     * @param day 
+     * @param hour the hour to set
+     * @param min the min to set
+     * @param day  the day to set
      */
     public void setTime(int hour, int min, boolean day) {
         this.time = time;
@@ -183,14 +187,14 @@ public class Ticket {
     
     /**
      * 
-     * @param paid 
+     * @param paid the paid status
      */
     public void setPaid(boolean paid){
         this.paid = paid;
     }
     /**
      * 
-     * @return paid
+     * @return the paid status
      */
     public boolean getPaid(){
         return paid;

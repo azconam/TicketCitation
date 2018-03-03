@@ -16,8 +16,11 @@ import javafx.stage.Stage;
 
 
 /**
- *
- * @author Mauricio
+ * Calls on TicketModel, TicketView, and TicketController
+ * to create a GUI ticket citation system
+ * 
+ * @author Mauricio Azcona
+ * @version 1.4 Build March 2, 2018
  */
 public class TicketGUI extends Application {
 

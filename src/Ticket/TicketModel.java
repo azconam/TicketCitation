@@ -8,8 +8,10 @@ package Ticket;
 import java.util.ArrayList;
 
 /**
- *
- * @author Mauricio
+ * Provides a model to store tickets
+ * 
+ * @author Mauricio Azcona
+ * @version Build 1.4 March 2, 2018
  */
 
 // class used to store the tickets

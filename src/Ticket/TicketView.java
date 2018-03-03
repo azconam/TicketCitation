@@ -32,8 +32,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
- *
+ * Provides a GUI for inputing ticket information and displaying
+ * payment information
+ * 
  * @author Mauricio Azcona
+ * @version Build 1.4 March 2, 2018
  */
 
 // TicketView is the GUI class for TicketGUI
