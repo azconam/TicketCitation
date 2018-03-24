@@ -40,21 +40,6 @@ import javafx.stage.Stage;
  */
 public class TicketView extends BorderPane {
 
-    /**
-     * @return the save
-     */
-    public Button getSave() {
-        return save;
-    }
-
-    /**
-     * @param save the save to set
-     */
-    public void setSave(Button save) {
-        this.save = save;
-    }
-
-
     private TextField ticketNumber = new TextField();
     private TextField licensePlate = new TextField();
     private TextField state = new TextField();
@@ -74,7 +59,6 @@ public class TicketView extends BorderPane {
     private Button back = new Button("<<");
     private Button forward = new Button(">>");
     private Button modify = new Button("Paid");
-    private Button save = new Button("Save to File");
     
     private GridPane gp = new GridPane();
     private HBox topBox = new HBox();
@@ -182,7 +166,7 @@ public class TicketView extends BorderPane {
         getLeftBox().setPrefWidth(200);
         getLeftBox().setAlignment(Pos.CENTER);
         getLeftBox().setSpacing(10);
-        getLeftBox().getChildren().addAll(getSubmit(), getBack(), getForward(), getModify(), getSave());
+        getLeftBox().getChildren().addAll(getSubmit(), getBack(), getForward(), getModify());
         this.setLeft(getLeftBox());
 
         

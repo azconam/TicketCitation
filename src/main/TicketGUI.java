@@ -12,7 +12,6 @@ import Ticket.TicketView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.*;
 
 
 
@@ -45,9 +44,8 @@ public class TicketGUI extends Application {
     /**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args) throws IOException{
-            FileOutputStream out = null;
-		launch(args);
+	public static void main(String[] args) {
+            launch(args);
 	}
     
 }
