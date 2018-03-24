@@ -6,6 +6,7 @@
 package Ticket;
 
 import java.util.ArrayList;
+import java.io.*;
 
 /**
  * Provides a model to store tickets
@@ -15,8 +16,8 @@ import java.util.ArrayList;
  */
 
 // class used to store the tickets
-public class TicketModel {
-    
+public class TicketModel{
+    FileOutputStream out = null;
     /**
      * @return the ticketsDB
      */

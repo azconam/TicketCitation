@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Ticket;
 
 /**
@@ -119,6 +120,30 @@ public class TicketController {
 
             }
         });
+        
+        ticketView.getSave().setOnAction(e -> {
+            if(ticketView.getLastTicketNum()<ticketModel.getTicketsDB().size() && ticketModel.getTicketsDB().size()>0){
+                ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).setPaid(true);
+                String something = (
+                      "Ticket Number: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getNumber() + "\n"
+                    + "License Plate: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getLicense() + "\n"
+                    + "State: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getState() + "\n"
+                    + "Permit: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getPermit() + "\n"
+                    + "Make/Model: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getMake() + "\n"
+                    + "Color: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getColor() + "\n"
+                    + "Location: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getLocation() + "\n"
+                    + "Issued By: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getIssuer() + "\n"
+                    + "Paid: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getPaid()+ "\n"                    
+
+                );
+            
+                ticketView.getBottomLabel().setText(something);
+                ticketView.getBottomBox().getChildren().clear();
+                ticketView.getBottomBox().getChildren().add(ticketView.getBottomLabel()); 
+
+            }
+        });
+
     }
     
     
