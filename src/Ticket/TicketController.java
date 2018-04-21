@@ -6,6 +6,9 @@
 
 package Ticket;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Connects the model and the view by handling events from the view
  * and sending them to the model.
@@ -18,6 +21,8 @@ package Ticket;
 public class TicketController {
     TicketModel ticketModel;
     TicketView ticketView;
+    
+    int ticketNum = 0;
 
     /**
      * 
@@ -33,6 +38,7 @@ public class TicketController {
     /**
      * Attaches handlers
      */
+    
     public void attachHandlers(){
             ticketView.getSubmit().setOnAction(e -> {
                 Ticket currentTicket = new Ticket();
@@ -47,90 +53,70 @@ public class TicketController {
                 currentTicket.setColor(ticketView.getColor().getText());
                 currentTicket.setLocation(ticketView.getLocation().getText());
                 currentTicket.setIssuer(ticketView.getIssuer().getText());
+                currentTicket.setDate(ticketView.getDate().getText());
+                currentTicket.setTime(ticketView.getTime().getText());
                 
                 //Saves ticket directly to file (and not to ticket DB)
                 try{
-                ticketModel.saveTicket(currentTicket);
+                   System.out.println("TRYING TO UPDATE");
+                ticketModel.update(currentTicket);
                 }
                 catch(Exception exception) {System.out.println("Could not save to file.\n");
                 }
-                
-                ticketModel.setTicketNum(ticketModel.getTicketNum()+1);
                 ticketView.clearFields();
         });
             
         ticketView.getBack().setOnAction(e -> {
-            if(ticketModel.getTicketsDB().size()!=ticketModel.getTicketNum() || !ticketModel.checkEmpty()){
-                ticketModel.readFile();
-            }
-            if(ticketView.getLastTicketNum()>0){
-            ticketView.setLastTicketNum(ticketView.getLastTicketNum() - 1);
-            ticketView.getBottomBox().getChildren().clear();
-            String something = (
-                      "Ticket Number: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getNumber() + "\n"
-                    + "License Plate: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getLicense() + "\n"
-                    + "State: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getState() + "\n"
-                    + "Permit: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getPermit() + "\n"
-                    + "Make/Model: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getMake() + "\n"
-                    + "Color: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getColor() + "\n"
-                    + "Location: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getLocation() + "\n"
-                    + "Issued By: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getIssuer() + "\n"      
-                    + "Paid: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getPaid()+ "\n"                    
-
-               );
-                ticketView.getBottomLabel().setText(something);
-                ticketView.getBottomBox().getChildren().add(ticketView.getBottomLabel()); 
+            if(ticketModel.numOfTickets()>0 && ticketNum>0){
+                ticketNum--;
+                try {
+                    ticketView.getBottomBox().getChildren().clear();
+                    String something = (
+                            "Ticket Number: "+ ticketModel.getTicket(ticketNum).getNumber()+"\n"
+                            + "License Plate: "+ ticketModel.getTicket(ticketNum).getLicense() + "\n"
+                            + "State: " + ticketModel.getTicket(ticketNum).getState() + "\n"
+                            + "Permit: " + ticketModel.getTicket(ticketNum).getPermit() + "\n"
+                            + "Make/Model: " + ticketModel.getTicket(ticketNum).getMake() + "\n"
+                            + "Color: " + ticketModel.getTicket(ticketNum).getColor() + "\n"
+                            + "Location: " + ticketModel.getTicket(ticketNum).getLocation() + "\n"
+                            + "Issued By: " + ticketModel.getTicket(ticketNum).getIssuer() + "\n"
+                            + "Paid: " + ticketModel.getTicket(ticketNum).getPaid()+ "\n"                            
+                            );
+                    ticketView.getBottomLabel().setText(something); 
+                    ticketView.getBottomBox().getChildren().add(ticketView.getBottomLabel());                    
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                }
             }
             
         });
         
         ticketView.getForward().setOnAction(e -> {
-            if(ticketModel.getTicketsDB().size()!=ticketModel.getTicketNum() || !ticketModel.checkEmpty()){
-                ticketModel.readFile();
-            }
-            if(ticketView.getLastTicketNum()<ticketModel.getTicketsDB().size()-1 && ticketModel.getTicketsDB().size()>0){
-                ticketView.getBottomBox().getChildren().clear();
-                ticketView.setLastTicketNum(ticketView.getLastTicketNum() + 1);
-
-                String something = (
-                          "Ticket Number: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getNumber() + "\n"
-                        + "License Plate: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getLicense() + "\n"
-                        + "State: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getState() + "\n"
-                        + "Permit: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getPermit() + "\n"
-                        + "Make/Model: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getMake() + "\n"
-                        + "Color: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getColor() + "\n"
-                        + "Location: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getLocation() + "\n"
-                        + "Issued By: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getIssuer() + "\n"
-                        + "Paid: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getPaid()+ "\n"                    
-
-                   );
-            
-                ticketView.getBottomLabel().setText(something);
-                ticketView.getBottomBox().getChildren().add(ticketView.getBottomLabel()); 
+            if(ticketModel.numOfTickets()>0 && ticketNum<ticketModel.numOfTickets()){
+                ticketNum++;
+                try {
+                    ticketView.getBottomBox().getChildren().clear();
+                    String something = (
+                            "Ticket Number: "+ ticketModel.getTicket(ticketNum).getNumber()+"\n"
+                            + "License Plate: "+ ticketModel.getTicket(ticketNum).getLicense() + "\n"
+                            + "State: " + ticketModel.getTicket(ticketNum).getState() + "\n"
+                            + "Permit: " + ticketModel.getTicket(ticketNum).getPermit() + "\n"
+                            + "Make/Model: " + ticketModel.getTicket(ticketNum).getMake() + "\n"
+                            + "Color: " + ticketModel.getTicket(ticketNum).getColor() + "\n"
+                            + "Location: " + ticketModel.getTicket(ticketNum).getLocation() + "\n"
+                            + "Issued By: " + ticketModel.getTicket(ticketNum).getIssuer() + "\n"
+                            + "Paid: " + ticketModel.getTicket(ticketNum).getPaid()+ "\n"                            
+                            );
+                    ticketView.getBottomLabel().setText(something); 
+                    ticketView.getBottomBox().getChildren().add(ticketView.getBottomLabel());                    
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                }
             }
         });
         
         ticketView.getModify().setOnAction(e -> {
-            if(ticketView.getLastTicketNum()<ticketModel.getTicketsDB().size() && ticketModel.getTicketsDB().size()>0){
-                ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).setPaid(true);
-                String something = (
-                      "Ticket Number: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getNumber() + "\n"
-                    + "License Plate: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getLicense() + "\n"
-                    + "State: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getState() + "\n"
-                    + "Permit: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getPermit() + "\n"
-                    + "Make/Model: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getMake() + "\n"
-                    + "Color: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getColor() + "\n"
-                    + "Location: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getLocation() + "\n"
-                    + "Issued By: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getIssuer() + "\n"
-                    + "Paid: "+ ticketModel.getTicketsDB().get(ticketView.getLastTicketNum()).getPaid()+ "\n"                    
-
-                );
-            
-                ticketView.getBottomLabel().setText(something);
-                ticketView.getBottomBox().getChildren().clear();
-                ticketView.getBottomBox().getChildren().add(ticketView.getBottomLabel()); 
-
-            }
+            ticketModel.modify(ticketNum);
         });
 
 

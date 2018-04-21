@@ -40,16 +40,44 @@ import javafx.stage.Stage;
  */
 public class TicketView extends BorderPane {
 
+    /**
+     * @return the date
+     */
+    public TextField getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(TextField date) {
+        this.date = date;
+    }
+
+    /**
+     * @return the time
+     */
+    public TextField getTime() {
+        return time;
+    }
+
+    /**
+     * @param time the time to set
+     */
+    public void setTime(TextField time) {
+        this.time = time;
+    }
+
     private TextField ticketNumber = new TextField();
     private TextField licensePlate = new TextField();
     private TextField state = new TextField();
     private TextField permitNumber = new TextField();
     private TextField vehicleMake = new TextField();
     private TextField color = new TextField();
-    private Date date = new Date();
     private TextField location = new TextField();
-    private Date time = new Date();
     private TextField issuer = new TextField();
+    private TextField date = new TextField();
+    private TextField time = new TextField();
     
     // lastTicketNum is used to properly cycle thru the tickets when printing
     // avoids out of index error
@@ -102,32 +130,7 @@ public class TicketView extends BorderPane {
     private Label bottomLabel = new Label();
         
         
-    ObservableList<String> months = 
-            FXCollections.observableArrayList(
-                "January", "February", "March", "April",
-                "June", "July", "August", "September",
-                "October", "November", "December"
-                );
-
-    ObservableList<String> year =
-                FXCollections.observableArrayList(
-                    "2018",
-                    "2019",
-                    "2020",
-                    "2021"
-                );
-    
-    ComboBox monthSelect = new ComboBox(months);
-    ComboBox daySelect = new ComboBox();
-    ComboBox hourSelect = new ComboBox();
-    ComboBox minuteSelect = new ComboBox();
-    ComboBox dayNightSelect = new ComboBox();
-    ComboBox yearSelect = new ComboBox(year);
-
-    HBox dateBox = new HBox();
-    HBox timeBox = new HBox();
-
-    /**
+   /**
      * TicketView Constructor
      * 
      * Sets up the GUI that is divided in five parts:
@@ -178,28 +181,6 @@ public class TicketView extends BorderPane {
         
         
         title.setFont(Font.font("Arial", 30));
-
-        //populates combobox with 31 days
-        for(int i = 1; i<=31; i++){
-            daySelect.getItems().add(i);
-        }
-        // populates combobox with 12 months
-        for(int i = 1; i<=12; i++){
-            hourSelect.getItems().add(i);
-        }
-        // populates combobox with 60 minuts
-        for(int i = 1; i<=60; i++){
-            minuteSelect.getItems().add(i);
-        }
-        
-        dayNightSelect.getItems().addAll("AM", "PM");
-        
-        
-        dateBox.setSpacing(5);
-        dateBox.getChildren().addAll(monthSelect, daySelect, yearSelect);
-        
-        timeBox.setSpacing(5);      
-        timeBox.getChildren().addAll( hourSelect, new Label(":"), minuteSelect, dayNightSelect);
                 
         rb1.setToggleGroup(violation);
         rb2.setToggleGroup(violation);
@@ -255,11 +236,11 @@ public class TicketView extends BorderPane {
         getGp().add(violationLabel, 1, 6);
         getGp().add(getViolationTypes(), 1, 7);
         getGp().add(dateLabel, 0, 8);
-        getGp().add(dateBox, 0, 9);
+        getGp().add(getDate(), 0, 9);
         getGp().add(locationLabel, 1, 8);
         getGp().add(getLocation(), 1, 9);
         getGp().add(timeLabel, 0, 10);
-        getGp().add(timeBox, 0, 11);
+        getGp().add(getTime(), 0, 11);
         getGp().add(issuerLabel, 1, 10);
         getGp().add(getIssuer(), 1, 11);
         
@@ -284,6 +265,8 @@ public class TicketView extends BorderPane {
         location.clear();
         // time = new Date();
         issuer.clear();
+        date.clear();
+        time.clear();
 
     }
     
@@ -496,20 +479,7 @@ public class TicketView extends BorderPane {
         this.color = color;
     }
 
-    /**
-     * @return the date
-     */
-    public Date getDate() {
-        return date;
-    }
-
-    /**
-     * @param date the date to set
-     */
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
+    
     /**
      * @return the location
      */
@@ -524,19 +494,6 @@ public class TicketView extends BorderPane {
         this.location = location;
     }
 
-    /**
-     * @return the time
-     */
-    public Date getTime() {
-        return time;
-    }
-
-    /**
-     * @param time the time to set
-     */
-    public void setTime(Date time) {
-        this.time = time;
-    }
 
     /**
      * @return the issuer

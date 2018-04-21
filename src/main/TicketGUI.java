@@ -8,6 +8,8 @@ package main;
 import Ticket.TicketController;
 import Ticket.TicketModel;
 import Ticket.TicketView;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -35,6 +37,12 @@ public class TicketGUI extends Application {
         
         Scene scene = new Scene(view, 1500, 900);
         view.TicketView();
+        
+        try {
+            model.TicketModel();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
 
         primaryStage.setTitle("Parking Ticket Citation System");
         primaryStage.setScene(scene);

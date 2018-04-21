@@ -23,6 +23,34 @@ import java.util.Locale;
 public class Ticket {
 
     /**
+     * @return the date
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    /**
+     * @return the time
+     */
+    public String getTime() {
+        return time;
+    }
+
+    /**
+     * @param time the time to set
+     */
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    /**
      * 
      * @return the number (ticket number)
      */
@@ -122,27 +150,6 @@ public class Ticket {
     }
 
     /**
-     * @return the date
-     */
-    public Date getDate() {
-        return date;
-    }
-
-    /**
-     * Converts user input into Date format and sets it as Date
-     * 
-     * @param month the month to set
-     * @param day the day to set
-     * @param year the year to set
-     * @throws ParseException 
-     */
-    public void setDate(String month, int day, int year) throws ParseException {
-        DateFormat fmt = new SimpleDateFormat("MMMM dd yyyy", Locale.US);
-        Date date = fmt.parse(month+" "+ day + " "+ year);
-        this.date = date;
-    }
-
-    /**
      * @return the location
      */
     public String getLocation() {
@@ -156,22 +163,6 @@ public class Ticket {
         this.location = location;
     }
 
-    /**
-     * @return the time
-     */
-    public Date getTime() {
-        return time;
-    }
-
-    /**
-     * 
-     * @param hour the hour to set
-     * @param min the min to set
-     * @param day  the day to set
-     */
-    public void setTime(int hour, int min, boolean day) {
-        this.time = time;
-    }
 
     /**
      * @return the issuer
@@ -209,9 +200,9 @@ public class Ticket {
     private String make;
     private String color;
     private int violation;
-    private Date date;
+    private String date;
     private String location;
-    private Date time;
+    private String time;
     private String issuer;
     private boolean paid;
     

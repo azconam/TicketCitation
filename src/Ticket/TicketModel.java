@@ -8,6 +8,15 @@ package Ticket;
 import java.util.ArrayList;
 import java.io.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Provides a model to store tickets
  * 
@@ -17,113 +26,114 @@ import java.io.*;
 
 // class used to store the tickets
 public class TicketModel {
+    
+    String query;
+    Connection conn;
 
+    public void TicketModel() throws Exception{
+        getConnection();
+    }
     
-    String filename = "tickets.dat";
+    public Connection getConnection() throws Exception{
+        try{
+            String driver = "com.mysql.jdbc.Driver";
+            String url = "jdbc:mysql://localhost:3306/ticketsdb";
+            String username = "root";
+            String password = "K-G2Y6NWqXF.UM";
+            Class.forName(driver);
+                        
+            conn = DriverManager.getConnection(url, username, password);
+            return conn;
+        } catch(Exception e){System.out.println(e);}
+        return null;
+    }
     
-    private int ticketNum = 0;
+    public void update(Ticket currentTicket) throws Exception{
+        try{
+
+            Statement stmt = conn.createStatement();
+            query = "insert into tickets (ticketNum ,plate, state, permitNum, make,"
+                    + " color, violation, date, time, location, issuedby, paid)"
+                    + " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, currentTicket.getNumber());
+            ps.setString(2, currentTicket.getLicense());
+            ps.setString(3, currentTicket.getState());
+            ps.setString(4, currentTicket.getPermit());
+            ps.setString(5, currentTicket.getMake());
+            ps.setString(6, currentTicket.getColor());
+            ps.setInt(7, currentTicket.getViolation());
+            ps.setString(8, currentTicket.getDate());
+            ps.setString(9, currentTicket.getLocation());
+            ps.setString(10, currentTicket.getTime());
+            ps.setString(11, currentTicket.getIssuer());
+            ps.setBoolean(12, currentTicket.getPaid());
+            ps.execute();
+
+        } catch(Exception e){System.out.println(e);}
+        
+    }   
    
-    public void saveTicket(Ticket currentTicket) throws IOException{
-        File file = new File(filename);
-        file.createNewFile();
-        FileWriter writer = new FileWriter(file, true);
-        
-        writer.write(currentTicket.getNumber()+System.lineSeparator());
-        writer.write(currentTicket.getLicense()+System.lineSeparator());
-        writer.write(currentTicket.getState()+System.lineSeparator());
-        writer.write(currentTicket.getPermit()+System.lineSeparator());
-        writer.write(currentTicket.getMake()+System.lineSeparator());        
-        writer.write(currentTicket.getColor()+System.lineSeparator());
-        writer.write(currentTicket.getViolation()+System.lineSeparator());
-        writer.write(currentTicket.getDate()+System.lineSeparator());
-        writer.write(currentTicket.getLocation()+System.lineSeparator());
-        writer.write(currentTicket.getTime()+System.lineSeparator());
-        writer.write(currentTicket.getIssuer()+System.lineSeparator());
-        writer.write(currentTicket.getPaid()+System.lineSeparator());
-        writer.flush();
-        writer.close();
-    }
-    
-    public boolean checkEmpty(){
+    public Ticket getTicket(int ticketPos) throws Exception{ // changed from public static to public
         try{
-            BufferedReader br = new BufferedReader(new FileReader(filename));     
-            if (br.readLine() == null) {
-                return true;
-            }
-        }catch(Exception e){ System.out.println(e);}
-        return false;
+            
+            Ticket retrieved = new Ticket();            
+            query = "SELECT * from tickets";
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(query);
+            
+            rs.absolute(ticketPos);
+            retrieved.setNumber(rs.getInt("ticketNum"));
+            retrieved.setLicense(rs.getString("plate"));
+            retrieved.setState(rs.getString("state"));
+            retrieved.setPermit(rs.getString("permitNum"));
+            retrieved.setMake(rs.getString("make"));
+            retrieved.setColor(rs.getString("color"));
+            retrieved.setDate(rs.getString("date"));
+            retrieved.setViolation(rs.getInt("violation"));
+            retrieved.setTime(rs.getString("time"));
+            retrieved.setLocation(rs.getString("location"));
+            retrieved.setIssuer(rs.getString("issuedby"));
+            retrieved.setPaid(rs.getBoolean("paid"));
+            
+            
+            return retrieved;
+        } catch(Exception e){System.out.println(e);}
+        return null;
     }
     
-    public void readFile(){
-        String line = null;
-        int linesAlreadyRead = 0;
-        linesAlreadyRead = (ticketNum-ticketsDB.size())*10;
-        try{
-            FileReader fileReader = new FileReader(filename);
-            BufferedReader br = new BufferedReader(fileReader);  
-             while(linesAlreadyRead>0){
-                 br.readLine();
-                 linesAlreadyRead--;
-            }
-            while((line = br.readLine()) != null){
-                Ticket t = new Ticket();
-                t.setNumber(Integer.parseInt(line));
-                t.setLicense(br.readLine());
-                t.setState(br.readLine());
-                t.setPermit(br.readLine());
-                t.setMake(br.readLine());
-                t.setColor(br.readLine());
-                br.readLine();
-                br.readLine();
-                t.setLocation(br.readLine());
-                br.readLine();
-                t.setIssuer(br.readLine());
-                br.readLine();
-                
-                ticketsDB.add(t);
-            }
-        } 
-       catch(Exception exception) {
-           System.out.println(exception);
-          }
+    public int numOfTickets(){
+        query = "SELECT COUNT(*) from tickets";
+        try {
+            Statement stmt = conn.createStatement();
+            PreparedStatement st = conn.prepareStatement(query);    
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            return rs.getInt("count(*)");
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    return -1;
     }
     
-    /**
-     * @return the ticketsDB
-     */
-    public ArrayList<Ticket> getTicketsDB() {
-        return ticketsDB;
-    }
+    public void modify(int number){
+        query = "update tickets set paid = ? where ticketNUM = ?";
+  
+        try {
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setBoolean(1, true);
+            preparedStmt.setInt(2, number);
 
-    /**
-     * @param ticketsDB the ticketsDB to set
-     */
-    public void setTicketsDB(ArrayList<Ticket> ticketsDB) {
-        this.ticketsDB = ticketsDB;
-    }
-    
-    /**
-     * 
-     * @param currentTicket 
-     */
-    public void addTicket(Ticket currentTicket){
-        getTicketsDB().add(currentTicket);
-    }
-    
-    /**
-     * @return the ticketNum
-     */
-    public int getTicketNum() {
-        return ticketNum;
-    }
-
-    /**
-     * @param ticketNum the ticketNum to set
-     */
-    public void setTicketNum(int ticketNum) {
-        this.ticketNum = ticketNum;
-    }
+            // execute the java preparedstatement
+            preparedStmt.executeUpdate();
+            
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
         
-    private ArrayList<Ticket> ticketsDB = new ArrayList<Ticket>();
+    }
+    
     
 }
